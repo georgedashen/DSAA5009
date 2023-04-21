@@ -35,7 +35,8 @@ parser.add_argument("--epochs",
 	help="training epoches")
 parser.add_argument("--top_k", 
 	type=int, 
-	default=10, 
+	default=50, 		    
+# 	default=10, 
 	help="compute metrics@top_k")
 parser.add_argument("--factor_num", 
 	type=int,
@@ -76,8 +77,10 @@ test_dataset = data_utils.NCFData(
 		test_data, item_num, train_mat, 0, False)
 train_loader = data.DataLoader(train_dataset,
 		batch_size=args.batch_size, shuffle=True, num_workers=4)
+# test_loader = data.DataLoader(test_dataset,
+# 		batch_size=args.test_num_ng+1, shuffle=False, num_workers=0)
 test_loader = data.DataLoader(test_dataset,
-		batch_size=args.test_num_ng+1, shuffle=False, num_workers=0)
+		batch_size=500, shuffle=False, num_workers=0)
 
 ########################### CREATE MODEL #################################
 if config.model == 'NeuMF-pre':
