@@ -31,7 +31,7 @@ parser.add_argument("--dropout",
     help="dropout rate")
 parser.add_argument("--batch_size", 
     type=int, 
-    default=256, 
+    default=500, 
     help="batch size for training")
 parser.add_argument("--epochs", 
     type=int,
@@ -39,7 +39,7 @@ parser.add_argument("--epochs",
     help="training epoches")
 parser.add_argument("--top_k", 
     type=int, 
-    default=10, 
+    default=50, 
     help="compute metrics@top_k")
 parser.add_argument("--trainN", 
         type=int,
@@ -51,7 +51,7 @@ parser.add_argument("--testN",
         help="number of test data to load")
 parser.add_argument("--test_itemN",
         type=int,
-        default=100,
+        default=500,
         help="number of test items per user to load")
 parser.add_argument("--seq_len",
         type=int,
