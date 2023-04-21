@@ -14,7 +14,7 @@ def load_all(train_num=None, test_num=None, test_item_num=100):
 #         sep='\t', header=None, names=['user', 'item'], 
 #         usecols=[0, 1], dtype={0: np.int32, 1: np.int32})
     train_data = pd.read_csv(
-            'train.csv', 
+            train_rating, 
          header=None, names=['user', 'item'], 
             usecols=[0, 1], dtype={0: np.int32, 1: np.int32})
 
