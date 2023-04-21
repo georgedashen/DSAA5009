@@ -1,10 +1,10 @@
 # dataset name 
 dataset = 'ml-1m'
-assert dataset in ['ml-1m', 'pinterest-20']
+# assert dataset in ['ml-1m', 'pinterest-20']
 
 # model name 
 #model = 'NCF-attn'
-model = 'NCF-attn'
+model = 'MLP'
 assert model in ['MLP', 'GMF', 'NeuMF-end', 'NeuMF-pre', 'NCF-attn']
 
 # paths
