@@ -7,12 +7,18 @@ import torch.utils.data as data
 import config
 
 
-def load_all(test_num=100):
+def load_all(train_num=None, test_num=None, test_item_num=100):
 	""" We load all the three file here to save time in each epoch. """
+	#     train_data = pd.read_csv(
+	#         config.train_rating, 
+	#         sep='\t', header=None, names=['user', 'item'], 
+	#         usecols=[0, 1], dtype={0: np.int32, 1: np.int32})
+	
 	train_data = pd.read_csv(
-		config.train_rating, 
-		sep='\t', header=None, names=['user', 'item'], 
-		usecols=[0, 1], dtype={0: np.int32, 1: np.int32})
+	    train_rating, 
+	 header=None, names=['user', 'item'], 
+	    usecols=[0, 1], dtype={0: np.int32, 1: np.int32})
+
 
 	user_num = train_data['user'].max() + 1
 	item_num = train_data['item'].max() + 1
