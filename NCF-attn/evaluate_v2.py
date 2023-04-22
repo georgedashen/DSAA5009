@@ -5,22 +5,34 @@ from tqdm import tqdm
 
 
 def hit(gt_item, pred_items):
-    if gt_item in pred_items: #how about len>1
-        return 1
-    return 0
+    hit = 0
+    for item in gt_item:
+        if item in pred_items: #how about len>1
+            hit += 1
+    return hit/len(gt_item)
 
+# the same as HR
 def recall(gt_item, pred_item):
-    pass
+    hit = 0
+    for item in gt_item:
+        if item in pred_items:
+            hit += 1
+    return hit/len(gt_item)
 
 
 def ndcg(gt_item, pred_items):
-    if gt_item in pred_items: #how about len>1
-        index = pred_items.index(gt_item)
-        return np.reciprocal(np.log2(index+2))
-    return 0
+    dcg = 0
+    idcg = 0
+    for i, p in enumerate(pred_items):
+        if p in gt_item:
+            dcg += 1 / np.log2(i + 2)
+        if i < len(gt_item):
+            idcg += 1 / np.log2(i + 2)
+    ndcg = dcg / idcg
+    return ndcg
 
 
-def metrics(model, test_loader, args):
+def metrics(model, test_loader, labels, args):
     HR, NDCG = [], []
     predictions = []
     items = []
@@ -42,7 +54,9 @@ def metrics(model, test_loader, args):
     for i in range(args.user_num):
         _, indices = torch.topk(predictions[i*args.test_itemN:(i+1)*args.test_itemN], args.top_k)
         recommends = torch.take(items[i*args.test_itemN:(i+1)*args.test_itemN], indices).cpu().numpy().tolist()
-        gt_item = items[i*args.test_itemN].item() #could be len>1
+        idx = labels[i*args.test_itemN:(i+1)*args.test_itemN] # 1 for pos, 0 for neg
+        gt_item = [t.item() for t in items[i*args.test_itemN:(i+1)*args.test_itemN]]
+        gt_item = np.array(gt_item)[[i==1 for i in idx]]
         HR.append(hit(gt_item, recommends))
         NDCG.append(ndcg(gt_item, recommends))
 

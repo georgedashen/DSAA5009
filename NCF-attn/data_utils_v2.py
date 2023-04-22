@@ -28,6 +28,7 @@ def load_all(train_num=None, test_num=None, test_item_num=100):
         train_mat[x[0], x[1]] = 1.0
 
     test_data = []
+    labels = []
     with open(config.test_negative, 'r') as fd:
         line = fd.readline()
         num_u = 0
@@ -37,9 +38,11 @@ def load_all(train_num=None, test_num=None, test_item_num=100):
             u = eval(arr[0])[0]
             for i in range(len(eval(arr[0]))-1):
                 test_data.append([u, eval(arr[0])[i+1]])
+                labels.append(1)
                 c += 1
             for i in arr[1:]:
                 test_data.append([u, int(i)])
+                labels.append(0)
                 c += 1
                 if c == test_item_num:
                     break
@@ -48,7 +51,7 @@ def load_all(train_num=None, test_num=None, test_item_num=100):
                 break
             line = fd.readline()
 
-    return train_data, test_data, user_num, item_num, train_mat
+    return train_data, test_data, user_num, item_num, train_mat, labels
 
 
 class NCFData(data.Dataset):
