@@ -1,8 +1,21 @@
-nohup python baseline_chatGPT.py --k_user 5 --top_n 50 &
-nohup python baseline_chatGPT.py --k_user 10 --top_n 50 &
-nohup python baseline_chatGPT.py --k_user 20 --top_n 50 &
-nohup python baseline_chatGPT.py --k_user 10 --top_n 10 &
-nohup python baseline_chatGPT.py --k_user 10 --top_n 20 &
-nohup python baseline_chatGPT.py --model random --top_n 10 &
-nohup python baseline_chatGPT.py --model random --top_n 20 &
-nohup python baseline_chatGPT.py --model random --top_n 50 &
+# user-based kNN model
+nohup python baseline.py --k_user 5 --top_n 50 --test --output ./result_test &
+nohup python baseline.py --k_user 10 --top_n 50 --test --output ./result_test &
+nohup python baseline.py --k_user 20 --top_n 50 --test --output ./result_test &
+nohup python baseline.py --k_user 10 --top_n 10 --test --output ./result_test &
+nohup python baseline.py --k_user 10 --top_n 20 --test --output ./result_test &
+## following two are used in the report
+nohup python baseline.py --k_user 100 --top_n 50 --test --output ./result_test &
+nohup python baseline.py --k_user 1000 --top_n 50 --test --output ./result_test &
+
+# random model
+nohup python baseline.py --model random --top_n 10 --test --output ./result_test &
+nohup python baseline.py --model random --top_n 20 --test --output ./result_test &
+## following is used in the report
+nohup python baseline.py --model random --top_n 50 --test --output ./result_test &
+
+# random model
+nohup python baseline.py --model random --top_n 10 --test --output ./result_test &
+nohup python baseline.py --model random --top_n 20 --test --output ./result_test &
+## following is used in the report
+nohup python baseline.py --model random --top_n 50 --test --output ./result_test &
