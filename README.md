@@ -39,3 +39,16 @@ You can also use the provided `run baseline_experiment_negative.sh` to run a set
 Most of the code are bollowed from a pytorch version of [NeuMF](https://github.com/guoyang9/NCF), and one can check more details on the original NCF(2017) paper.
 
 [He, X., Liao, L., Zhang, H., Nie, L., Hu, X., & Chua, T. S. (2017, April). Neural collaborative filtering. In Proceedings of the 26th international conference on world wide web (pp. 173-182).](https://arxiv.org/abs/1708.05031)
+
+See how to run the NeuMF model in the `baseline` folder.
+
+## NCF-attn model
+This model is inspired by the NCF(2017) paper mentioned above. Basic ideas are:
+* Embedding both items and users as 2-D tensors, like word embeddings in a sentence (treat item/user as a "sentence")
+* Replacing the two-component structure with a single transformer decoder structure
+* No need to pretrain any layers
+
+See how to run the NCF-attn model in the `NCF-attn` folder.
+
+
+
