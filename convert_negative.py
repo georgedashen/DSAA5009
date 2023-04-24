@@ -12,7 +12,7 @@ with open('train_user_consumed.pkl', 'rb') as f:
     train = pickle.load(f)
 
 # construct train user-item matrix
-user_items_matrix = np.zeros((22976, 29148))
+user_items_matrix = np.zeros((22976, 29149))
 for i, (user, items) in enumerate(train.items()):
     for item in items:
         user_items_matrix[int(user)][item] = 1
@@ -26,7 +26,7 @@ with open(f'val_negative_{N}', 'w') as f:
     for i, (x, y_list) in enumerate(tqdm(data.items())):
         y_str = ','.join(str(y) for y in y_list) # positive samples
         N_rest = N - len(y_list) # number of negative samples
-        values = [i for i in range(29148) if i not in y_list and user_items_matrix[x][i]==0]
+        values = [i for i in range(29149) if i not in y_list and user_items_matrix[x][i]==0]
         random.shuffle(values) # randomized
         values = values[:N_rest] #negative sampling
         for value in values:
@@ -44,7 +44,7 @@ with open(f'test_negative_{N}', 'w') as f:
     for i, (x, y_list) in enumerate(tqdm(data.items())):
         y_str = ','.join(str(y) for y in y_list) # positive samples
         N_rest = N - len(y_list) # number of negative samples
-        values = [i for i in range(29148) if i not in y_list and user_items_matrix[x][i]==0]
+        values = [i for i in range(29149) if i not in y_list and user_items_matrix[x][i]==0]
         random.shuffle(values) # randomized
         values = values[:N_rest] #negative sampling
         values_str = '\t'.join(str(i) for i in values)
