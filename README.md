@@ -20,6 +20,8 @@ Noted that in our project, we trained and evaluated our models using negative sa
 python convert_negative.py
 ```
 
+For your convenience, a converted version of training set is provided as `train.csv` in this folder for running deep learning models.
+
 ## Non-deep-learning baseline models
 Baseline experiments provide options for testing random and user-based model on different top n items and k neighbors for users via cosine similarity and different models can be chosen. Default settings are `--k_user 5`, `--top_n 1`, `--model user-based`, without `--test` to indicate use the validation set for evaluations and without `--negative` for not using the negative sampling data.
 
