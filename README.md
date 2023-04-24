@@ -14,13 +14,13 @@ A quick start for user-based model using all data in test set to evaluate model 
 ```bash
 python baseline.py --test
 ```
-You can also use `run experiment_test.sh` to run a set of experiments on test set, which will produce results shown in the report.
+You can also use `run baseline_experiment_test.sh` to run a set of experiments on test set, which will produce results shown in the report.
 
 For results on negative sampling set, try to use:
 ```bash
 python baseline.py --negative /path/to/negative/sampling/data --test
 ```
-You can also use the provided `run experiment_negative.sh` to run a set of experiments on test set, which will produce results shown in the report.
+You can also use the provided `run baseline_experiment_negative.sh` to run a set of experiments on test set, which will produce results shown in the report.
 
 ## Deep learning baseline models (NeuMF: MLP + GMF)
 Most of the code are bollowed from a pytorch version of [NeuMF](https://github.com/guoyang9/NCF), and one can check more details on the original NCF(2017) paper.
