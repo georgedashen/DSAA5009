@@ -1,7 +1,7 @@
 # This is the revised version of NCF with attention layers
 
 ## Running
-Make sure to rename the previous converted training set and generated negative sampling val/test set as `taobao.train.rating`, `taobao.val.negative` and `taobao.test.negative`, respectively.
+Make sure to rename the previous converted training set and generated negative sampling val/test set as `taobao.train.rating`, `taobao.val.negative` and `taobao.test.negative`, respectively. The converted training set `train.csv` is provided in this directory.
 
 For quick start, use `python main_v2.py --gpu 0 --trainN 10000`. This setting does not guarantee good and correct results.
 
