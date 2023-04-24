@@ -2,7 +2,7 @@
 ## Group 3 - Recommendation system
 
 ## Requirements
-All experiments are done on two 3090 GPU with 24G memory.
+All experiments are done on two 3090 GPUs with 24G memory.
 ```
 * keras==2.11.0
 * numpy==1.21.6
