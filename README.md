@@ -10,17 +10,17 @@ python convert_negative.py
 ## Non-deep-learning baseline models
 Baseline experiments provide options for testing random and user-based model on different top n items and k neighbors for users via cosine similarity and different models can be chosen. Default settings are `--k_user 5`, `--top_n 1`, `--model user-based`, without `--test` to indicate use the validation set for evaluations and without `--negative` for not using the negative sampling data.
 
-A quick start for user-based model using all data in validation set to evaluate model performance is shown as following:
+A quick start for user-based model using all data in test set to evaluate model performance is shown as following:
 ```bash
-python baseline.py
+python baseline.py --test
 ```
 You can also use `run experiment_test.sh` to run a set of experiments on test set, which will produce results shown in the report.
 
 For results on negative sampling set, try to use:
 ```bash
-python baseline.py --negative /path/to/negative/sampling/data
+python baseline.py --negative /path/to/negative/sampling/data --test
 ```
-You can also use the provided `run experiment_test_negative.sh` to run a set of experiments on test set, which will produce results shown in the report.
+You can also use the provided `run experiment_negative.sh` to run a set of experiments on test set, which will produce results shown in the report.
 
 ## Deep learning baseline models (NeuMF: MLP + GMF)
 Most of the code are bollowed from a pytorch version of [NeuMF](https://github.com/guoyang9/NCF), and one can check more details on the original NCF(2017) paper.
