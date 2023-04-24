@@ -2,7 +2,7 @@
 ## Group 3 - Recommendation system
 
 ## Negative sampling and data conversion
-Noted that in our project, we trained and evaluated our models using negative sampling procedures. For training set, the negative sampling is performed during the training process of NCF/NCF-attn models and to reproduce the result one must use the same random seeding as shown in the code. For non-deep-learning baseline models there is no need to negative sample the training set. For validation/test set, one can use the following code to generate the negative sampling we used. Original data should be placed in the same folder.
+Noted that in our project, we trained and evaluated our models using negative sampling procedures. For training set, the negative sampling is performed during the training process of NCF/NCF-attn models and to reproduce the result one must use the same random seeding as shown in the code. For non-deep-learning baseline models there is no need to negative sample the training set. For validation/test set, one can use the following code to generate the negative sampling we used. Original data `train_user_consumed.pkl`, `val_user_consumed.pkl` and `test_user_consumed.pkl` should be placed in the same folder.
 ```bash
 python convert_negative.py
 ```
