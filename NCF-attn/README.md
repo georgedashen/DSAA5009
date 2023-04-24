@@ -3,16 +3,16 @@
 ## Running
 Make sure to rename the previous converted training set and generated negative sampling val/test set as `taobao.train.rating`, `taobao.val.negative` and `taobao.test.negative`, respectively. The converted training set `train.csv` is provided in this directory.
 
-For quick start, use `python main_v2.py --gpu 0 --trainN 10000`. This setting does not guarantee good and correct results.
-
-Note that environments and resources could be different with users, you can `cat best_run.sh` to see the arguments I used or use `python main.py -h` to see all arguments.
+For quick start, use `python main_v2.py --gpu 0 --trainN 10000 --testN 1000`. This setting only for fast showcase but not guarantee good and correct results.
 
 For single machine single GPU, I suggest using the following command to get proper results. 
 ```bash
 python main.py --gpu 0 --batch_size 256 --seq_len 8 --hid_dim 16 --dropout 0.5 --lr 0.0001 --epochs 20
 ```
 
-Each epoch need 40-60 minutes to run and model cost around 8G GPU memory.
+Each epoch need 40-60 minutes to run and model cost around 8G GPU memory. If you have more than one GPU, you can keep a batch size of 256 for each GPU.
+
+To reproduce the results in the report, one can run `sh experiments.sh` for both hyperparameter searching on validation set and final evaluation on test set.
 
 ## Files
 * `config.py` is for data/output directory and model settings
