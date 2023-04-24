@@ -1,3 +1,7 @@
+'''
+This version is tailored for taobao dataset
+'''
+
 import numpy as np 
 import pandas as pd 
 import scipy.sparse as sp
@@ -7,8 +11,10 @@ import torch.utils.data as data
 import config
 
 
-def load_all(train_num=None, test_num=None, test_item_num=100):
+def load_all(train_num=None, test_num=None, test_item_num=100, mode='test'):
     """ We load all the three file here to save time in each epoch. """
+    assert mode in ['test', 'val'], "Mode must be 'test' or 'validation'!"
+
     train_data = pd.read_csv(
         config.train_rating, 
         header=None, names=['user', 'item'], 
@@ -16,6 +22,7 @@ def load_all(train_num=None, test_num=None, test_item_num=100):
 
     user_num = train_data['user'].max() + 1
     item_num = train_data['item'].max() + 1
+    item_num = 29419
 
     if train_num:
         train_data = train_data[:train_num]
@@ -29,7 +36,12 @@ def load_all(train_num=None, test_num=None, test_item_num=100):
 
     test_data = []
     labels = []
-    with open(config.test_negative, 'r') as fd:
+    if mode == 'val':
+        fn = config.val_negative
+    else:
+        fn = config.test_negative
+    
+    with open(fn, 'r') as fd:
         line = fd.readline()
         num_u = 0
         while line != None and line != '':

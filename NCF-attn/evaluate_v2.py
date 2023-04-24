@@ -1,3 +1,7 @@
+'''
+This version is tailor for taobao dataset
+'''
+
 import numpy as np
 import torch
 from torch.nn.functional import softmax
@@ -18,7 +22,6 @@ def recall(gt_item, pred_item):
         if item in pred_items:
             hit += 1
     return hit/len(gt_item)
-
 
 def ndcg(gt_item, pred_items):
     dcg = 0

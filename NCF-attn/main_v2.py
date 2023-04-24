@@ -1,3 +1,8 @@
+'''
+This version is tailored for taobao dataset
+'''
+
+
 import os
 import time
 import argparse
@@ -92,9 +97,9 @@ parser.add_argument("--num_ng",
     default=4, 
     help="sample negative items for training")
 parser.add_argument("--seed",
-        type=int,
-        default=123,
-        help="sample part of negative items for testing")
+    type=int,
+    default=123,
+    help="sample part of negative items for testing")
 parser.add_argument("--out", 
     default=True,
     help="save model or not")
@@ -102,6 +107,18 @@ parser.add_argument("--gpu",
     type=str,
     default="0",  
     help="gpu card ID")
+parser.add_argument("--save_model",
+    type=bool,
+    default=True,
+    help="save best model during training")
+parser.add_argument("--mode",
+    type=str,
+    default='test',
+    help="Whether use test_set or validation_set")
+parser.add_argument("--pretrained",
+    type=str,
+    default=None,
+    help="path for pretrained model")
 args = parser.parse_args()
 
 os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
@@ -122,7 +139,7 @@ def set_rand_seed(seed):
 set_rand_seed(args.seed)
 
 ############################## PREPARE DATASET ##########################
-train_data, test_data, user_num ,item_num, train_mat, labels  = data_utils_v2.load_all(args.trainN, args.testN, args.test_itemN)
+train_data, test_data, user_num ,item_num, train_mat, labels  = data_utils_v2.load_all(args.trainN, args.testN, args.test_itemN, args.mode)
 item_num = 29419
 args.user_num = user_num #22976
 args.item_num = item_num #29419
@@ -156,8 +173,24 @@ if config.model != "NCF-attn":
 else:
     model = model.NCF_attn(item_num, user_num, args)
 
+if args.pretrained:
+    loaded_model = torch.load(args.pretrained)
+    model = model.cuda()
+    model.load_state_dict(loaded_model.module.state_dict())
+    #model = torch.nn.DataParallel(model, device_ids=list(range(len(args.gpu.split(",")))))
+    model_parameters = filter(lambda p: p.requires_grad, model.parameters())
+    params = sum([np.prod(p.size()) for p in model_parameters])
+    print(f"Model has {params} parameters!")
+    model.eval()
+    HR, NDCG = evaluate_v2.metrics(model, test_loader, labels, args)
+    print("HR = {:.3f}, NDCG = {:.3f}".format(HR, NDCG))
+    
 model = model.cuda()
 model = torch.nn.DataParallel(model, device_ids=list(range(len(args.gpu.split(",")))))
+
+model_parameters = filter(lambda p: p.requires_grad, model.parameters())
+params = sum([np.prod(p.size()) for p in model_parameters])
+print(f"Model has {params} parameters!")
 
 loss_function = nn.CrossEntropyLoss()
 
@@ -183,6 +216,8 @@ for epoch in range(args.epochs):
         for param_group in optimizer.param_groups:
             return param_group['lr']
     print("Training ... lr:{}".format(get_learning_rate(optimizer)))
+
+    fn = '{}{}_decLlayer{}_seqLen{}_hidDim{}_nHead{}_dropout{}_lr{}_Epoch{}_Batch{}_{}GPU.csv'.format(config.model_path, config.model, args.n_dec_layer, args.seq_len, args.hid_dim, args.nhead, args.dropout, args.lr, args.epochs, args.batch_size, len(args.gpu.split(",")))
 
     losses = 0
     for i, data in enumerate(tqdm(train_loader)):
@@ -214,17 +249,15 @@ for epoch in range(args.epochs):
 
     if HR > best_hr:
         best_hr, best_ndcg, best_epoch = HR, NDCG, epoch
-        if args.out:
+        if args.out and args.save_model:
             if not os.path.exists(config.model_path):
                 os.mkdir(config.model_path)
-            torch.save(model, 
-                '{}{}_decLlayer{}_seqLen{}_hidDim{}_nHead{}_dropout{}_lr{}_Epoch{}_Batch{}_{}GPU.pth'.format(config.model_path, config.model, args.n_dec_layer, args.seq_len, args.hid_dim, args.nhead, args.dropout, args.lr, args.epochs, args.batch_size, len(args.gpu.split(",")))
+                torch.save(model, 
+                '{}{}_decLlayer{}_seqLen{}_hidDim{}_nHead{}_dropout{}_lr{}_Epoch{}_Batch{}_{}GPU.pth'.format(config.model_path, config.model, args.n_dec_layer, args.seq_len, args.hid_dim, args.nhead, args.dropout, args.lr, args.epochs, args.batch_size, len(args.gpu.split(","))))
+            with open(fn, 'w') as f:
+                csv.writer(f).writerow(['model','n_dec_layer', 'seq_len', 'hid_dim', 'nhead', 'dropout', 'args.lr', 'epochs', 'best_epoch', 'batch_size', 'n_GPU', 'Recall@50', 'NDCG@50'])
+                csv.writer(f).writerow([config.model, args.n_dec_layer, args.seq_len, args.hid_dim, args.nhead, args.dropout, args.lr, args.epochs, best_epoch, args.batch_size, len(args.gpu.split(",")), best_hr, best_ndcg])
 
 print("End. Best epoch {:03d}: HR = {:.3f}, NDCG = {:.3f}".format(
                                     best_epoch, best_hr, best_ndcg))
 
-fn = '{}{}_decLlayer{}_seqLen{}_hidDim{}_nHead{}_dropout{}_lr{}_Epoch{}_Batch{}_{}GPU.csv'.format(config.model_path, config.model, args.n_dec_layer, args.seq_len, args.hid_dim, args.nhead, args.dropout, args.lr, args.epochs, args.batch_size, len(args.gpu.split(",")))
-
-with open(fn, 'w') as f:
-    csv.writer(f).writerow(['model','n_dec_layer', 'seq_len', 'hid_dim', 'nhead', 'dropout', 'args.lr', 'epochs', 'best_epoch', 'batch_size', 'n_GPU', 'Recall@50', 'NDCG@50'])
-    csv.writer(f).writerow([config.model, args.n_dec_layer, args.seq_len, args.hid_dim, args.nhead, args.dropout, args.lr, args.epochs, best_epoch, args.batch_size, len(args.gpu.split(",")), best_hr, best_ndcg])
