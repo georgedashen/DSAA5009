@@ -19,3 +19,7 @@ nohup python baseline.py --model random --top_n 10 --test --output ./result_test
 nohup python baseline.py --model random --top_n 20 --test --output ./result_test &
 ## following is used in the report
 nohup python baseline.py --model random --top_n 50 --test --output ./result_test &
+
+# majority model
+## following is used in the report
+nohup python baseline.py --model majority --top_n 50 --test --output ./result_test &
