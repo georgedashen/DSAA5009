@@ -1,9 +1,28 @@
 # DSAA5009 Final Project
 ## Group 3 - Recommendation system
 
-## Baseline
-Baseline experiments provide options for testing random and user-based model on different top n items and k neighbors for users via cosine similarity.
+## Negative sampling and data conversion
+Noted that in our project, we trained and evaluated our models using negative sampling procedures. For training set, the negative sampling is performed during the training process of NCF/NCF-attn models and to reproduce the result one must use the same random seeding as shown in the code. For non-deep-learning baseline models there is no need to negative sample the training set. For validation/test set, one can use the following code to generate the negative sampling we used. Original data should be placed in the same folder.
+```bash
+python convert_negative.py
+```
 
-`python baseline_chatGPT.py --k_user 5 --top_n 50`
+## Non-deep-learning baseline models
+Baseline experiments provide options for testing random and user-based model on different top n items and k neighbors for users via cosine similarity and different models can be chosen. Default settings are `--k_user 5`, `--top_n 1`, `--model user-based`, without `--test` to indicate use the validation set for evaluations and without `--negative` for not using the negative sampling data.
 
-You can also use `run experiment.sh` to run a set of experiments.
+A quick start for user-based model using all data in validation set to evaluate model performance is shown as following:
+```bash
+python baseline.py
+```
+You can also use `run experiment_test.sh` to run a set of experiments on test set, which will produce results shown in the report.
+
+For results on negative sampling set, try to use:
+```bash
+python baseline.py --negative /path/to/negative/sampling/data
+```
+You can also use the provided `run experiment_test_negative.sh` to run a set of experiments on test set, which will produce results shown in the report.
+
+## Deep learning baseline models (NeuMF: MLP + GMF)
+Most of the code are bollowed from a pytorch version of [NeuMF](https://github.com/guoyang9/NCF), and one can check more details on the original NCF(2017) paper.
+
+[He, X., Liao, L., Zhang, H., Nie, L., Hu, X., & Chua, T. S. (2017, April). Neural collaborative filtering. In Proceedings of the 26th international conference on world wide web (pp. 173-182).](https://arxiv.org/abs/1708.05031)
