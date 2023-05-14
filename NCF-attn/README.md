@@ -7,7 +7,7 @@ For quick start, use `python main_v2.py --gpu 0 --trainN 10000 --testN 1000`. Th
 
 For single machine single GPU, I suggest using the following command to get proper results. 
 ```bash
-python main.py --gpu 0 --batch_size 256 --seq_len 8 --hid_dim 16 --dropout 0.5 --lr 0.0001 --epochs 20
+python main_v2.py --gpu 0 --batch_size 256 --seq_len 8 --hid_dim 16 --dropout 0.5 --lr 0.0001 --epochs 20
 ```
 
 Each epoch need 40-60 minutes to run and model cost around 8G GPU memory. If you have more than one GPU, you can keep a batch size of 256 for each GPU.
