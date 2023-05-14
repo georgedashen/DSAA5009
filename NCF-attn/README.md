@@ -17,6 +17,8 @@ To reproduce the results in the report, one can run `sh experiments.sh` for both
 ## Files
 * `config.py` is for data/output directory and model settings
 
+* `main_v2.py` if for main training process
+
 * `data_utils_v2.py` is for data loading
 
 * `model.py` is the construction of NCF-attn model
@@ -24,3 +26,5 @@ To reproduce the results in the report, one can run `sh experiments.sh` for both
 * `transformer.py` is the definition of decoder layers with customized forward process
 
 * `evaluate_v2.py` is for getting recall@50 and NDCG@50 with test data
+
+* `experiments.sh` is for fast running directly from Linux bash
